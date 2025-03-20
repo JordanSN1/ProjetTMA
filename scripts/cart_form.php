@@ -10,18 +10,19 @@ if (!$conn) {
     die("Erreur de connexion à la base de données.");
 }
 
-function getProductByName($conn, $name) {
+function getProductByName($conn, $name)
+{
     // Requête pour récupérer les produits, en s'assurant que l'ID spécifique à chaque type de produit est bien assigné
     $query = "SELECT 'menu' AS type, menu_id AS id, name, prix, picture FROM menus WHERE name = :name
               UNION ALL
               SELECT 'burger' AS type, burger_id AS id, name, prix, picture FROM burgers WHERE name = :name
               UNION ALL
               SELECT 'boisson' AS type, boisson_id AS id, name, prix, picture FROM boissons WHERE name = :name";
-    
+
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':name', $name, PDO::PARAM_STR);
     $stmt->execute();
-    
+
     return $stmt->fetch(PDO::FETCH_ASSOC); // Retourner un seul produit
 }
 
@@ -32,7 +33,7 @@ function getProductByName($conn, $name) {
 // Gérer les actions sur le panier (ajout, mise à jour, suppression)
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
- 
+
     // Si l'action est "ajouter", on ajoute le produit au panier
     if ($action == 'add') {
         $name = $_GET['name'];
@@ -72,7 +73,7 @@ if (isset($_GET['action'])) {
     // Si l'action est "remove", on retire le produit du panier
     if ($action == 'remove') {
         $name = $_GET['name'];
-    
+
         // Vérifier si le produit existe dans le panier
         if (isset($_SESSION['cart'][$name])) {
             // Si la quantité est supérieure à 1, on diminue la quantité
@@ -88,7 +89,7 @@ if (isset($_GET['action'])) {
     }
     if ($action == 'update') {
         $name = $_GET['name'];
-    
+
         // Vérifier si le produit existe dans le panier
         if (isset($_SESSION['cart'][$name])) {
             // Si la quantité est supérieure à 1, on diminue la quantité
@@ -102,6 +103,6 @@ if (isset($_GET['action'])) {
             exit;
         }
     }
-    
+
 }
 ?>
