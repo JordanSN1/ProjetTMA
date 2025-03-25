@@ -7,6 +7,7 @@ PhantomBurger est une plateforme en ligne dédiée à la vente de produits alime
 
 ### Diagramme de Cas d'Utilisation
 
+
 ```mermaid
 graph TB
     subgraph Acteurs
@@ -60,6 +61,14 @@ graph TB
     Admin --> ModifierProduits
     Admin --> GererCommandes
     Admin --> ModererCommentaires
+
+    %% Relations extends et includes
+    PasserCommande -->|include| AjouterPanier
+    GererProduits -.->|extend| ModifierProduits
+    GererCommandes -->|include| SuivreCommande
+    LaisserCommentaire -.->|extend| NoterProduit
+    ModererCommentaires -.->|extend| LaisserCommentaire
+
 ```
 
 ### Diagramme de Classes
@@ -285,3 +294,4 @@ sequenceDiagram
 
 ### 7. `toggleMenuOptions()`
 - **Description** : Affiche ou masque les options de menu en fonction du type de produit sélectionné. 
+
